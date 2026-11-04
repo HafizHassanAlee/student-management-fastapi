@@ -1,51 +1,86 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ brand }}</title>
-  <style>
-    :root {
-      --deep: #1f2a44;     /* deep indigo: background */
-      --glow: #2f3f6b;     /* lighter indigo: soft glow */
-      --gold: #f2b84b;     /* warm amber: brand name */
-      --text: #e8ecf5;     /* soft white: body text */
-    }
- 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
- 
-    body {
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      text-align: center;
-      padding: 2rem;
-      font-family: Georgia, "Times New Roman", serif;
-      color: var(--text);
-      background: radial-gradient(circle at 50% 35%, var(--glow), var(--deep) 70%);
-    }
- 
-    h1 {
-      font-size: clamp(3rem, 12vw, 6.5rem);
-      font-weight: 700;
-      letter-spacing: 0.02em;
-      color: var(--gold);
-    }
- 
-    p {
-      max-width: 34ch;
-      margin: 1.25rem auto 0;
-      font-size: clamp(1.1rem, 3vw, 1.4rem);
-      line-height: 1.6;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Husanix | Student Dashboard</title>
+
+    <link rel="stylesheet" href="/static/css/style.css">
 </head>
+
 <body>
-    <h1>Rumiware</h1>
-    <h3>Home Page</h3>
-  <main>
-    <h1>{{ brand }}</h1>
-    <p>{{ message }}</p>
-  </main>
+
+    <div class="container">
+
+        <div class="header">
+            <div class="brand">HUSANIX.</div>
+            <div class="badge">Student Portal</div>
+        </div>
+
+        <div class="welcome">
+            <h1>Welcome, {{ student.name }}!</h1>
+            <p>Here is your student profile and academic information.</p>
+        </div>
+
+        <div class="profile-card">
+
+            <div class="profile-top">
+                <div class="avatar">
+                    {{ student.name[0] }}
+                </div>
+
+                <div>
+                    <h2>{{ student.name }}</h2>
+                    <p>Student Profile</p>
+                </div>
+            </div>
+
+            <div class="details">
+
+                <div class="detail">
+                    <span>Username</span>
+                    <strong>{{ student.name }}</strong>
+                </div>
+
+                <div class="detail">
+                    <span>Roll Number</span>
+                    <strong>{{ student["roll no"] }}</strong>
+                </div>
+
+                <div class="detail">
+                    <span>Age</span>
+                    <strong>{{ student.age }} years old</strong>
+                </div>
+
+                <div class="detail">
+                    <span>Gender</span>
+                    <strong>{{ student.gender }}</strong>
+                </div>
+
+                <div class="detail">
+                    <span>City</span>
+                    <strong>{{ student.city }}</strong>
+                </div>
+
+                <div class="detail">
+                    <span>Major</span>
+                    <strong>{{ student.major }}</strong>
+                </div>
+
+                <div class="detail">
+                    <span>Academic GPA</span>
+                    <strong class="gpa">{{ student.gpa }} / 4.0</strong>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="footer">
+            © 2026 Husanix Student Management System
+        </div>
+
+    </div>
+
 </body>
 </html>

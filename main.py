@@ -7,7 +7,9 @@ from datetime import datetime, timedelta, timezone
 from fastapi.responses import RedirectResponse 
 from fastapi import Form
 from fastapi.responses import JSONResponse
-
+import os
+import hmac
+from dotenv import load_dotenv
 
 app = FastAPI()
 
@@ -19,6 +21,11 @@ templates = Jinja2Templates(directory="templates")
 SECRET_KEY = "d05b3e1db534c9cdcf5b0190faaadfbc48f474034fb4a49498982e5d5a849477"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
+
+ADMIN_USERNAME = os.getenv("ADMIN_USERNAME", "admin")
+ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "change-this-password")
+
 
 @app.get("/")
 async def home(request: Request):
@@ -42,10 +49,21 @@ def authenticate_student(username: str, password: str):
     return None
 
 
+def authenticate_admin(username: str, password: str):
+
+    if (
+        hmac.compare_digest(username, ADMIN_USERNAME)
+        and hmac.compare_digest(password, ADMIN_PASSWORD)
+    ):
+        return True
+
+    return False
+
+
+
 def get_current_student(request: Request):
 
     token = request.cookies.get("access_token")
-
     if not token:
         raise HTTPException(
             status_code=401,
@@ -74,6 +92,27 @@ def get_current_student(request: Request):
         status_code=401,
         detail="Student not found"
     )
+
+
+def get_current_admin(request: Request):
+
+    token = request.cookies.get("admin_access_token")
+
+    if not token:
+        raise HTTPException(
+            status_code=401,
+            detail="Admin login required"
+        )
+
+    payload = verify_token(token)
+
+    if payload.get("role") != "admin":
+        raise HTTPException(
+            status_code=403,
+            detail="Admin access required"
+        )
+
+    return payload
 
 
 def create_access_token(data: dict):
@@ -136,6 +175,83 @@ def login(
     )
 
     return response
+
+@app.get("/admin/login")
+def admin_login_page(request: Request):
+
+    return templates.TemplateResponse(
+        request=request,
+        name="admin_login.html",
+        context={}
+    )
+
+
+@app.post("/admin/login")
+def admin_login(
+    username: str = Form(...),
+    password: str = Form(...)
+):
+
+    admin = authenticate_admin(username, password)
+
+    if not admin:
+        raise HTTPException(
+            status_code=401,
+            detail="Incorrect admin credentials"
+        )
+
+    access_token = create_access_token({
+        "sub": ADMIN_USERNAME,
+        "role": "admin"
+    })
+
+    response = RedirectResponse(
+        url="/admin/dashboard",
+        status_code=303
+    )
+
+    response.set_cookie(
+        key="admin_access_token",
+        value=access_token,
+        httponly=True,
+        max_age=1800,
+        samesite="lax",
+        secure=False
+    )
+
+    return response
+
+
+@app.get("/admin/dashboard")
+def admin_dashboard(
+    request: Request,
+    admin: dict = Depends(get_current_admin)
+):
+
+    with open("students.json", "r") as file:
+        students_data = json.load(file)
+
+    students = []
+
+    for student in students_data.values():
+
+        students.append({
+            "name": student["name"],
+            "roll_no": student["roll no"]
+        })
+
+    total_students = len(students)
+
+    return templates.TemplateResponse(
+        request=request,
+        name="admin_dashboard.html",
+        context={
+            "students": students,
+            "total_students": total_students
+        }
+    )
+
+
 
 def verify_token(token: str):
     try:

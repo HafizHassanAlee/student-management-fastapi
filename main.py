@@ -17,6 +17,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 templates = Jinja2Templates(directory="templates")
 
+load_dotenv()
 
 SECRET_KEY = "d05b3e1db534c9cdcf5b0190faaadfbc48f474034fb4a49498982e5d5a849477"
 ALGORITHM = "HS256"

@@ -29,6 +29,15 @@ ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
 
 
 @app.get("/")
+async def home(request:Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="home.html",
+        context={}
+    )
+
+
+@app.get("/login")
 async def home(request: Request):
     return templates.TemplateResponse(
         request=request,

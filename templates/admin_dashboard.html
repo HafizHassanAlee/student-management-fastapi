@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,169 +6,478 @@
     <title>Husanix | Admin Dashboard</title>
 
     <link rel="stylesheet" href="/static/css/style.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6f9;
+            color: #243b55;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1150px;
+            margin: 35px auto;
+        }
+
+        /* HEADER */
+
+        header {
+            background: #243b55;
+            color: white;
+            padding: 22px 30px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 27px;
+            letter-spacing: 1px;
+        }
+
+        header span {
+            color: #cbd5e1;
+            font-size: 14px;
+        }
+
+        .welcome {
+            margin-bottom: 25px;
+        }
+
+        .welcome h2 {
+            font-size: 25px;
+            margin-bottom: 8px;
+        }
+
+        .welcome p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        /* STATISTICS */
+
+        .stats-card {
+            background: white;
+            padding: 22px 25px;
+            border-radius: 12px;
+            border-left: 5px solid #2563eb;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+
+        .stats-card p {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .stats-card h1 {
+            font-size: 35px;
+            color: #243b55;
+        }
+
+        /* GENERAL SECTION */
+
+        .section-card {
+            background: white;
+            padding: 28px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            margin-bottom: 22px;
+        }
+
+        .section-title h2 {
+            font-size: 21px;
+            margin-bottom: 7px;
+        }
+
+        .section-title p {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        /* FORM */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            font-weight: bold;
+            color: #334155;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #dbe2ea;
+            border-radius: 7px;
+            outline: none;
+            font-size: 14px;
+            background: #fff;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .submit-btn {
+            background: #243b55;
+            color: white;
+            border: none;
+            padding: 13px 22px;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .submit-btn:hover {
+            background: #2563eb;
+        }
+
+        /* STUDENT TABLE */
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 450px;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #edf0f4;
+            font-size: 14px;
+        }
+
+        th {
+            background: #243b55;
+            color: white;
+            font-size: 13px;
+        }
+
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .roll-badge {
+            background: #eaf1ff;
+            color: #2563eb;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 25px;
+            color: #64748b;
+        }
+
+        /* FOOTER */
+
+        footer {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 12px;
+            padding: 20px;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 650px) {
+            .container {
+                width: 94%;
+                margin: 18px auto;
+            }
+
+            header {
+                padding: 18px;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-card {
+                padding: 20px;
+            }
+
+            .full-width {
+                grid-column: auto;
+            }
+
+            .submit-btn {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
-<style>
- /* General Styling */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-}
 
-body {
-    background-color: #f4f6f9;
-    color: #333;
-}
-
-/* Main Container */
-.container {
-    width: 90%;
-    max-width: 1000px;
-    margin: 40px auto;
-}
-
-/* Header */
-header {
-    background-color: #243b55;
-    color: white;
-    padding: 20px 25px;
-    border-radius: 8px;
-    margin-bottom: 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-header h1 {
-    font-size: 26px;
-}
-
-header span {
-    font-size: 16px;
-}
-
-/* Headings */
-h2 {
-    margin: 25px 0 15px;
-    color: #243b55;
-}
-
-/* Profile Card */
-.profile-card {
-    background-color: rgb(18, 178, 241);
-    padding: 25px;
-    border-radius: 8px;
-    border-left: 5px solid #2563eb;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    margin-bottom: 30px;
-}
-
-.profile-card h3 {
-    color: #666;
-    font-size: 17px;
-    margin-bottom: 12px;
-}
-
-.profile-card h1 {
-    color: #2563eb;
-    font-size: 35px;
-}
-
-/* Students Table */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: white;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
-
-th, td {
-    padding: 15px;
-    text-align: left;
-    border-bottom: 1px solid #eee;
-}
-
-th {
-    background-color: #243b55;
-    color: white;
-}
-
-tr:hover {
-    background-color: #f1f5f9;
-}
-
-tbody tr:last-child td {
-    border-bottom: none;
-}
-
-/* Mobile Responsive */
-@media (max-width: 600px) {
-    .container {
-        width: 95%;
-        margin: 20px auto;
-    }
-
-    header {
-        flex-direction: column;
-        gap: 10px;
-        text-align: center;
-    }
-
-    th, td {
-        padding: 10px;
-        font-size: 14px;
-    }
-}
-</style>
 <body>
 
-    <div class="container">
+<div class="container">
 
-        <header>
-            <h1>HUSANIX.</h1>
-            <span>Admin Dashboard</span>
-        </header>
+    <!-- HEADER -->
 
+    <header>
+        <h1>HUSANIX.</h1>
+        <span>ADMIN DASHBOARD</span>
+    </header>
+
+
+    <!-- WELCOME -->
+
+    <section class="welcome">
         <h2>Welcome, Administrator!</h2>
+        <p>Manage student records and registrations from your dashboard.</p>
+    </section>
 
-        <div class="profile-card">
 
-            <h3>Total Registered Students</h3>
+    <!-- STATISTICS -->
 
-            <h1>{{ total_students }}</h1>
+    <section class="stats-card">
+        <p>Total Registered Students</p>
+        <h1>{{ total_students }}</h1>
+    </section>
+
+
+    <!-- ADD STUDENT FORM -->
+
+    <section class="section-card">
+
+        <div class="section-title">
+            <h2>Add New Student</h2>
+            <p>Enter the student's details to register a new student.</p>
+        </div>
+
+        <form action="/admin/students/create" method="POST">
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label>CNIC</label>
+                    <p style="font-size: 12px; padding: 0%;">Enter 13 digits ID without (-)</p>
+                    <input
+                        type="text"
+                        name="cnic"
+                        placeholder="3520112345678"
+                        pattern="[0-9]{13}"
+                        maxlength="13"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input
+                        type="text"
+                        name="name"
+                        placeholder="Enter full name"
+                        minlength="2"
+                        maxlength="50"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Age</label>
+                    <input
+                        type="number"
+                        name="age"
+                        min="10"
+                        max="100"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Gender</label>
+                    <select name="gender" required>
+                        <option value="">Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>City</label>
+                    <input
+                        type="text"
+                        name="city"
+                        placeholder="Enter city"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Roll Number</label>
+                    <p style="font-size: 12px; padding: 0%;">Enter Roll No. in Format (Stf-xxx) </p>
+                    <input
+                        type="text"
+                        name="roll_no"
+                        placeholder="Stf-501"
+                        pattern="Stf-[0-9]+"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Major / Department</label>
+                    <select name="Department" required>
+                    <option value="">Select Department</option>
+                    <option value="Computer Science">Computer Science</option>
+                    <option value="Mathematics">Mathematics</option>
+                    <option value="Computer Science">Biological Sciences</option>
+                    <option value="English">English</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>GPA</label>
+                    <input
+                        type="number"
+                        name="gpa"
+                        step="0.01"
+                        min="0"
+                        max="4"
+                        placeholder="3.70"
+                        required
+                    >
+                </div>
+
+                <div class="form-group full-width">
+                    <button type="submit" class="submit-btn">
+                        + Register Student
+                    </button>
+                </div>
+
+            </div>
+
+        </form>
+
+    </section>
+
+    <section>
+        <input type="text"
+        name="idtodelete"
+        minlength="13"
+        maxlength="13"
+        placeholder="1234567891234"
+        required>
+
+        <input
+        type="text"
+        name="rolltodelete"
+        minlength="7"
+        maxlength="7"
+        placeholder="Stf-xxx"
+        required>
+
+    </section>
+
+
+    <!-- STUDENT RECORDS -->
+
+    <section class="section-card">
+
+        <div class="section-title">
+            <h2>All Students</h2>
+            <p>View all students registered in the system.</p>
+        </div>
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Roll Number</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for student in students %}
+
+                    <tr>
+                        <td>{{ student.name }}</td>
+                        <td>
+                            <span class="roll-badge">
+                                {{ student.roll_no }}
+                            </span>
+                        </td>
+                    </tr>
+
+                    {% else %}
+
+                    <tr>
+                        <td colspan="2" class="empty-message">
+                            No students registered yet.
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
 
         </div>
 
-        <h2>All Students</h2>
+    </section>
 
-        <table>
 
-            <thead>
-                <tr>
-                    <th>Student Name</th>
-                    <th>Roll Number</th>
-                </tr>
-            </thead>
+    <footer>
+        © 2026 Husanix Student Management System. All rights reserved.
+    </footer>
 
-            <tbody>
-
-                {% for student in students %}
-
-                <tr>
-                    <td>{{ student.name }}</td>
-                    <td>{{ student.roll_no }}</td>
-                </tr>
-
-                {% endfor %}
-
-            </tbody>
-
-        </table>
-
-    </div>
+</div>
 
 </body>
 </html>

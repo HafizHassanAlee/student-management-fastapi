@@ -139,6 +139,15 @@ def create_access_token(data: dict):
     return encoded_jwt
 
 
+def load_students():
+    with open("students.json", "r") as file:
+        return json.load(file)
+
+
+def save_students(students):
+    with open("students.json", "w") as file:
+        json.dump(students, file, indent=4)
+
 
 @app.get("/dashboard")
 def dashboard(
@@ -243,12 +252,18 @@ def admin_dashboard(
 
     students = []
 
-    for student in students_data.values():
-
+    for cnic, student in students_data.items():
+        
         students.append({
-            "name": student["name"],
-            "roll_no": student["roll no"]
-        })
+        "cnic": cnic,
+        "name": student["name"],
+        "age": student["age"],
+        "gender": student["gender"],
+        "city": student["city"],
+        "roll_no": student["roll no"],
+        "major": student["major"],
+        "gpa": student["gpa"]
+    })
 
     total_students = len(students)
 
@@ -259,6 +274,45 @@ def admin_dashboard(
             "students": students,
             "total_students": total_students
         }
+    )
+
+
+@app.post("/admin/students/create")
+def create_student(
+    cnic: str = Form(...),
+    name: str = Form(...),
+    age: int = Form(...),
+    gender: str = Form(...),
+    city: str = Form(...),
+    roll_no: str = Form(...),
+    major: str = Form(...),
+    gpa: float = Form(...),
+    admin: dict = Depends(get_current_admin)
+):
+
+    students = load_students()
+
+    if cnic in students:
+        raise HTTPException(
+            status_code=400,
+            detail="Student already exists"
+        )
+
+    students[cnic] = {
+        "name": name,
+        "age": age,
+        "gender": gender,
+        "city": city,
+        "roll no": roll_no,
+        "major": major,
+        "gpa": gpa
+    }
+
+    save_students(students)
+
+    return RedirectResponse(
+        url="/admin/dashboard",
+        status_code=303
     )
 
 

@@ -1,56 +1,67 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | Student Management System</title>
+    <title>Login | Husanix</title>
 
     <style>
+        /* Colors used on this page (same as the admin dashboard):
+           Dark navy   : #1b2b40
+           Blue        : #2563eb
+           Light grey  : #f3f5f8
+           Grey text   : #64748b
+           Border grey : #d5dce6
+        */
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
         }
 
         body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f3f5f8;
+            color: #1b2b40;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, #667eea, #33387a);
             padding: 20px;
         }
 
+        /* The white login box */
         .container {
             width: 100%;
             max-width: 400px;
             background: white;
+            border: 1px solid #e3e8ef;
+            border-radius: 12px;
             padding: 40px 35px;
-            border-radius: 15px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
-            transition: ease-in-out 0.3s;
         }
 
-        .container:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-                }
-
-        .login {
+        /* Brand name at the top */
+        .brand {
             text-align: center;
-            margin-bottom: 10px;
-            color: #2a2a2a;
-            font-size: 35px;
+            font-size: 22px;
             font-weight: bold;
+            letter-spacing: 1px;
+            color: #1b2b40;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 8px;
         }
 
         .subtitle {
             text-align: center;
-            color: #91a0b2;
-            margin-bottom: 30px;
+            color: #64748b;
             font-size: 14px;
+            margin-bottom: 30px;
         }
 
         .form-group {
@@ -59,58 +70,67 @@
 
         label {
             display: block;
-            margin-bottom: 8px;
-            color: #444;
+            margin-bottom: 6px;
+            font-size: 13px;
             font-weight: bold;
+            color: #334155;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #d5dce6;
+            border-radius: 8px;
             font-size: 14px;
         }
 
-        input[type="text"],
-        input[type="password"] {
-            width: 100%;
-            padding: 13px 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            outline: none;
-            font-size: 15px;
-            transition: 0.3s;
-        }
-
+        /* Blue border when the user clicks inside a box */
         input:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
         }
 
+        /* Login button: navy, turns blue on hover */
         button {
             width: 100%;
-            padding: 14px;
+            padding: 13px;
             border: none;
             border-radius: 8px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: #1b2b40;
             color: white;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             cursor: pointer;
-            transition: 0.3s;
         }
 
         button:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-            transform: scale(1.01);
+            background: #2563eb;
+        }
+
+        /* "Are you an administrator?" text */
+        .admin-link {
+            text-align: center;
+            font-size: 14px;
+            color: #64748b;
+            margin-top: 22px;
+        }
+
+        .admin-link a {
+            color: #2563eb;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .admin-link a:hover {
+            text-decoration: underline;
         }
 
         .footer {
             text-align: center;
-            margin-top: 25px;
-            color: #999;
             font-size: 12px;
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 30px 22px;
-            }
+            color: #94a3b8;
+            margin-top: 25px;
         }
     </style>
 </head>
@@ -119,49 +139,37 @@
 
     <div class="container">
 
-        <h1 class="login">Welcome Back!</h1>
+        <div class="brand">RUMIWARE.</div>
 
-        <p class="subtitle">
-            Login to your Student Management System
-        </p>
+        <h1>Welcome Back!</h1>
+        <p class="subtitle">Login to your Student Management System</p>
 
         <form action="/login" method="post">
 
             <div class="form-group">
                 <label for="username">Username</label>
-                <input
-                    type="text"
-                    id="username"
-                    name="username"
-                    placeholder="Enter your username"
-                    required
-                >
+                <input type="text" id="username" name="username" placeholder="Enter your username" required>
             </div>
 
             <div class="form-group">
                 <label for="password">Password</label>
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    placeholder="Enter your password"
-                    required
-                >
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
             </div>
 
             <button type="submit">Login</button>
 
         </form>
-        <p>
-    Are you an administrator?
-    <a href="/admin/login">Admin Login</a>
-</p>
+
+        <p class="admin-link">
+            Are you an administrator?
+            <a href="/admin/login">Admin Login</a>
+        </p>
 
         <div class="footer">
-            Student Management System &copy; 2026
+            Student Management System by Rumiware&copy; 2026
         </div>
 
     </div>
 
 </body>
-</html>
+</html>     

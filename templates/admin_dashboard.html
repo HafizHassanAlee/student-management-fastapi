@@ -5,479 +5,519 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Husanix | Admin Dashboard</title>
 
-    <link rel="stylesheet" href="/static/css/style.css">
-
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
+        :root {
+            --ink: #1b2b40;
+            --muted: #64748b;
+            --line: #e3e8ef;
+            --bg: #f3f5f8;
+            --surface: #ffffff;
+            --accent: #2563eb;
+            --accent-soft: #e8f0ff;
+            --danger: #c0392b;
+            --danger-soft: #fdecea;
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
 
         body {
-            background: #f4f6f9;
-            color: #243b55;
+            font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+            line-height: 1.5;
         }
 
-        .container {
-            width: 92%;
-            max-width: 1150px;
-            margin: 35px auto;
+        :focus-visible { outline: 3px solid rgba(37, 99, 235, .45); outline-offset: 2px; }
+
+        /* ---------- LAYOUT ---------- */
+        .app {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: 100vh;
         }
 
-        /* HEADER */
-
-        header {
-            background: #243b55;
-            color: white;
-            padding: 22px 30px;
-            border-radius: 12px;
+        /* ---------- SIDEBAR ---------- */
+        .sidebar {
+            background: var(--ink);
+            color: #fff;
+            padding: 28px 18px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .brand { padding: 0 10px; }
+        .brand h1 { font-size: 24px; letter-spacing: 1px; }
+        .brand p { font-size: 13px; color: #a9b8cc; margin-top: 2px; }
+
+        .nav { display: flex; flex-direction: column; gap: 4px; }
+
+        .nav a {
+            display: flex;
             align-items: center;
-            margin-bottom: 30px;
-        }
-
-        header h1 {
-            font-size: 27px;
-            letter-spacing: 1px;
-        }
-
-        header span {
-            color: #cbd5e1;
+            gap: 12px;
+            padding: 11px 12px;
+            border-radius: 8px;
             font-size: 14px;
+            color: #c6d2e2;
+            text-decoration: none;
         }
+        .nav a:hover { background: rgba(255,255,255,.07); color: #fff; }
+        .nav a:focus-visible { outline: 3px solid rgba(255,255,255,.55); }
+        .nav svg { width: 18px; height: 18px; flex: none; }
 
-        .welcome {
-            margin-bottom: 25px;
-        }
-
-        .welcome h2 {
-            font-size: 25px;
-            margin-bottom: 8px;
-        }
-
-        .welcome p {
-            color: #64748b;
-            font-size: 14px;
-        }
-
-        /* STATISTICS */
-
-        .stats-card {
-            background: white;
-            padding: 22px 25px;
-            border-radius: 12px;
-            border-left: 5px solid #2563eb;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
-        }
-
-        .stats-card p {
-            color: #64748b;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-
-        .stats-card h1 {
-            font-size: 35px;
-            color: #243b55;
-        }
-
-        /* GENERAL SECTION */
-
-        .section-card {
-            background: white;
-            padding: 28px;
-            border-radius: 12px;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
-        }
-
-        .section-title {
-            margin-bottom: 22px;
-        }
-
-        .section-title h2 {
-            font-size: 21px;
-            margin-bottom: 7px;
-        }
-
-        .section-title p {
-            color: #64748b;
+        .sidebar-foot {
+            margin-top: auto;
+            padding: 14px;
+            border-radius: 10px;
+            background: rgba(255,255,255,.07);
             font-size: 13px;
+            color: #c6d2e2;
+        }
+        .sidebar-foot strong { display: block; font-size: 26px; color: #fff; line-height: 1.2; }
+
+        /* ---------- MAIN ---------- */
+        .main { padding: 34px 40px 20px; max-width: 1100px; width: 100%; }
+
+        .page-head { margin-bottom: 26px; }
+        .page-head h2 { font-size: 26px; }
+        .page-head p { color: var(--muted); font-size: 14px; margin-top: 4px; }
+
+        .section { margin-bottom: 34px; scroll-margin-top: 24px; }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 26px;
         }
 
-        /* FORM */
+        .card-head { margin-bottom: 20px; }
+        .card-head h3 { font-size: 18px; }
+        .card-head p { color: var(--muted); font-size: 13px; margin-top: 3px; }
 
+        /* ---------- FORMS ---------- */
         .form-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
+            gap: 20px 22px;
         }
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
+        .field { display: flex; flex-direction: column; gap: 6px; }
 
-        .form-group label {
-            font-size: 13px;
-            font-weight: bold;
-            color: #334155;
-        }
+        .field label { font-size: 13px; font-weight: 600; color: #334155; }
+        .hint { font-size: 12px; color: var(--muted); }
 
-        .form-group input,
-        .form-group select {
+        .field input, .field select {
             width: 100%;
-            padding: 12px 14px;
-            border: 1px solid #dbe2ea;
-            border-radius: 7px;
-            outline: none;
+            padding: 11px 13px;
+            border: 1px solid #d5dce6;
+            border-radius: 8px;
             font-size: 14px;
+            font-family: inherit;
+            color: var(--ink);
             background: #fff;
         }
-
-        .form-group input:focus,
-        .form-group select:focus {
-            border-color: #2563eb;
-            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+        .field input:focus, .field select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(37,99,235,.15);
         }
 
-        .full-width {
-            grid-column: 1 / -1;
-        }
+        .form-actions { display: flex; gap: 12px; margin-top: 24px; }
 
-        .submit-btn {
-            background: #243b55;
-            color: white;
+        .btn {
             border: none;
-            padding: 13px 22px;
-            border-radius: 7px;
+            padding: 12px 22px;
+            border-radius: 8px;
             font-size: 14px;
-            font-weight: bold;
+            font-weight: 600;
+            font-family: inherit;
             cursor: pointer;
-            transition: 0.2s;
+            transition: background .15s;
         }
+        .btn-primary { background: var(--ink); color: #fff; }
+        .btn-primary:hover { background: var(--accent); }
+        .btn-ghost { background: transparent; color: var(--ink); border: 1px solid #d5dce6; }
+        .btn-ghost:hover { background: var(--bg); }
+        .btn-danger { background: var(--danger); color: #fff; }
+        .btn-danger:hover { background: #a02e22; }
 
-        .submit-btn:hover {
-            background: #2563eb;
-        }
-
-        /* STUDENT TABLE */
-
-        .table-wrapper {
-            width: 100%;
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 450px;
-        }
-
-        th, td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid #edf0f4;
-            font-size: 14px;
-        }
-
-        th {
-            background: #243b55;
-            color: white;
+        .notice {
+            padding: 12px 14px;
+            border-radius: 8px;
             font-size: 13px;
+            margin-bottom: 22px;
         }
+        .notice.warn { background: var(--danger-soft); color: #7d2a20; }
 
-        tbody tr:hover {
-            background: #f8fafc;
+        /* Confirmation checkbox (replaces the JS confirm dialog) */
+        .confirm {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 22px;
+            font-size: 14px;
+            color: #7d2a20;
+            font-weight: 600;
         }
+        .confirm input { width: 18px; height: 18px; accent-color: var(--danger); }
 
-        tbody tr:last-child td {
-            border-bottom: none;
+        .divider {
+            grid-column: 1 / -1;
+            border: none;
+            border-top: 1px solid var(--line);
         }
+        .group-label {
+            grid-column: 1 / -1;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .group-label span { display: block; font-weight: 400; font-size: 12px; color: var(--muted); }
+
+        /* ---------- TABLE ---------- */
+        .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; }
+
+        table { width: 100%; border-collapse: collapse; min-width: 420px; }
+        th, td { padding: 14px 16px; text-align: left; font-size: 14px; border-bottom: 1px solid var(--line); }
+        th { background: #f7f9fc; color: var(--muted); font-size: 13px; font-weight: 600; }
+        tbody tr:last-child td { border-bottom: none; }
+        tbody tr:hover { background: #fafbfd; }
 
         .roll-badge {
-            background: #eaf1ff;
-            color: #2563eb;
-            padding: 5px 10px;
-            border-radius: 5px;
+            display: inline-block;
+            background: var(--accent-soft);
+            color: var(--accent);
+            padding: 4px 10px;
+            border-radius: 6px;
             font-size: 12px;
-            font-weight: bold;
+            font-weight: 700;
         }
 
-        .empty-message {
-            text-align: center;
-            padding: 25px;
-            color: #64748b;
+        .empty { text-align: center; color: var(--muted); padding: 32px 16px; }
+
+        footer { text-align: center; color: #94a3b8; font-size: 12px; padding: 30px 0 10px; }
+
+        /* ---------- RESPONSIVE ---------- */
+        @media (max-width: 860px) {
+            .app { grid-template-columns: 1fr; }
+
+            .sidebar {
+                position: static;
+                height: auto;
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: 14px;
+                padding: 16px 18px;
+            }
+            .sidebar-foot { display: none; }
+            .nav { flex-direction: row; flex-wrap: wrap; width: 100%; }
+            .nav a { padding: 9px 12px; }
+
+            .main { padding: 24px 18px 10px; }
         }
 
-        /* FOOTER */
-
-        footer {
-            text-align: center;
-            color: #94a3b8;
-            font-size: 12px;
-            padding: 20px;
+        @media (max-width: 600px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .card { padding: 20px; }
+            .form-actions { flex-direction: column; }
+            .btn { width: 100%; }
         }
 
-        /* RESPONSIVE */
-
-        @media (max-width: 650px) {
-            .container {
-                width: 94%;
-                margin: 18px auto;
-            }
-
-            header {
-                padding: 18px;
-                flex-direction: column;
-                gap: 8px;
-            }
-
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .section-card {
-                padding: 20px;
-            }
-
-            .full-width {
-                grid-column: auto;
-            }
-
-            .submit-btn {
-                width: 100%;
-            }
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            .btn { transition: none; }
         }
     </style>
 </head>
 
 <body>
+<div class="app">
 
-<div class="container">
-
-    <!-- HEADER -->
-
-    <header>
-        <h1>HUSANIX.</h1>
-        <span>ADMIN DASHBOARD</span>
-    </header>
-
-
-    <!-- WELCOME -->
-
-    <section class="welcome">
-        <h2>Welcome, Administrator!</h2>
-        <p>Manage student records and registrations from your dashboard.</p>
-    </section>
-
-
-    <!-- STATISTICS -->
-
-    <section class="stats-card">
-        <p>Total Registered Students</p>
-        <h1>{{ total_students }}</h1>
-    </section>
-
-
-    <!-- ADD STUDENT FORM -->
-
-    <section class="section-card">
-
-        <div class="section-title">
-            <h2>Add New Student</h2>
-            <p>Enter the student's details to register a new student.</p>
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar">
+        <div class="brand">
+            <h1>HUSANIX.</h1>
+            <p>Admin dashboard</p>
         </div>
 
-        <form action="/admin/students/create" method="POST">
+        <nav class="nav" aria-label="Dashboard sections">
+            <a href="#add">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+                Add student
+            </a>
+            <a href="#update">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                Update student
+            </a>
+            <a href="#students">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                All students
+            </a>
+            <a href="#delete">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+                Delete student
+            </a>
+        </nav>
 
-            <div class="form-grid">
+        <div class="sidebar-foot">
+            Registered students
+            <strong>{{ total_students }}</strong>
+        </div>
+    </aside>
 
-                <div class="form-group">
-                    <label>CNIC</label>
-                    <p style="font-size: 12px; padding: 0%;">Enter 13 digits ID without (-)</p>
-                    <input
-                        type="text"
-                        name="cnic"
-                        placeholder="3520112345678"
-                        pattern="[0-9]{13}"
-                        maxlength="13"
-                        required
-                    >
+    <!-- ================= MAIN ================= -->
+    <main class="main">
+
+        <div class="page-head">
+            <h2>Welcome, Administrator</h2>
+            <p>Manage student records and registrations from one place.</p>
+        </div>
+
+        <!-- ---------- 1. ADD STUDENT ---------- -->
+        <section class="section" id="add" aria-labelledby="add-title">
+            <div class="card">
+                <div class="card-head">
+                    <h3 id="add-title">Add new student</h3>
+                    <p>Enter the student's details to register them.</p>
                 </div>
 
-                <div class="form-group">
-                    <label>Full Name</label>
-                    <input
-                        type="text"
-                        name="name"
-                        placeholder="Enter full name"
-                        minlength="2"
-                        maxlength="50"
-                        required
-                    >
-                </div>
+                <form action="/admin/students/create" method="POST">
+                    <div class="form-grid">
 
-                <div class="form-group">
-                    <label>Age</label>
-                    <input
-                        type="number"
-                        name="age"
-                        min="10"
-                        max="100"
-                        required
-                    >
-                </div>
+                        <div class="field">
+                            <label for="cnic">CNIC</label>
+                            <input id="cnic" type="text" name="cnic" placeholder="3520112345678"
+                                   pattern="[0-9]{13}" maxlength="13" inputmode="numeric" required>
+                            <span class="hint">13 digits, without dashes.</span>
+                        </div>
 
-                <div class="form-group">
-                    <label>Gender</label>
-                    <select name="gender" required>
-                        <option value="">Select Gender</option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
+                        <div class="field">
+                            <label for="name">Full name</label>
+                            <input id="name" type="text" name="name" placeholder="Enter full name"
+                                   minlength="2" maxlength="50" required>
+                        </div>
 
-                <div class="form-group">
-                    <label>City</label>
-                    <input
-                        type="text"
-                        name="city"
-                        placeholder="Enter city"
-                        required
-                    >
-                </div>
+                        <div class="field">
+                            <label for="age">Age</label>
+                            <input id="age" type="number" name="age" min="10" max="100" required>
+                        </div>
 
-                <div class="form-group">
-                    <label>Roll Number</label>
-                    <p style="font-size: 12px; padding: 0%;">Enter Roll No. in Format (Stf-xxx) </p>
-                    <input
-                        type="text"
-                        name="roll_no"
-                        placeholder="Stf-501"
-                        pattern="Stf-[0-9]+"
-                        required
-                    >
-                </div>
+                        <div class="field">
+                            <label for="gender">Gender</label>
+                            <select id="gender" name="gender" required>
+                                <option value="">Select gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
 
-                <div class="form-group">
-                    <label>Major / Department</label>
-                    <select name="Department" required>
-                    <option value="">Select Department</option>
-                    <option value="Computer Science">Computer Science</option>
-                    <option value="Mathematics">Mathematics</option>
-                    <option value="Computer Science">Biological Sciences</option>
-                    <option value="English">English</option>
-                    </select>
-                </div>
+                        <div class="field">
+                            <label for="city">City</label>
+                            <input id="city" type="text" name="city" placeholder="Enter city" required>
+                        </div>
 
-                <div class="form-group">
-                    <label>GPA</label>
-                    <input
-                        type="number"
-                        name="gpa"
-                        step="0.01"
-                        min="0"
-                        max="4"
-                        placeholder="3.70"
-                        required
-                    >
-                </div>
+                        <div class="field">
+                            <label for="roll_no">Roll number</label>
+                            <input id="roll_no" type="text" name="roll_no" placeholder="Stf-501"
+                                   pattern="Stf-[0-9]+" required>
+                            <span class="hint">Format: Stf-xxx</span>
+                        </div>
 
-                <div class="form-group full-width">
-                    <button type="submit" class="submit-btn">
-                        + Register Student
-                    </button>
-                </div>
+                        <div class="field">
+                            <label for="department">Major / department</label>
+                            <select id="department" name="Department" required>
+                                <option value="">Select department</option>
+                                <option value="Computer Science">Computer Science</option>
+                                <option value="Mathematics">Mathematics</option>
+                                <option value="Biological Sciences">Biological Sciences</option>
+                                <option value="English">English</option>
+                            </select>
+                        </div>
 
+                        <div class="field">
+                            <label for="gpa">GPA</label>
+                            <input id="gpa" type="number" name="gpa" step="0.01" min="0" max="4"
+                                   placeholder="3.70" required>
+                            <span class="hint">On a 4.0 scale.</span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Register student</button>
+                        <button type="reset" class="btn btn-ghost">Clear form</button>
+                    </div>
+                </form>
             </div>
+        </section>
 
-        </form>
+        <!-- ---------- 2. UPDATE STUDENT ---------- -->
+        <section class="section" id="update" aria-labelledby="update-title">
+            <div class="card">
+                <div class="card-head">
+                    <h3 id="update-title">Update student</h3>
+                    <p>Identify the student, then fill in only the fields you want to change.</p>
+                </div>
 
-    </section>
+                <form action="/admin/students/update" method="POST">
+                    <div class="form-grid">
 
-    <section>
-        <input type="text"
-        name="idtodelete"
-        minlength="13"
-        maxlength="13"
-        placeholder="1234567891234"
-        required>
+                        <div class="group-label">
+                            Find the student
+                            <span>Both values must match an existing record.</span>
+                        </div>
 
-        <input
-        type="text"
-        name="rolltodelete"
-        minlength="7"
-        maxlength="7"
-        placeholder="Stf-xxx"
-        required>
+                        <div class="field">
+                            <label for="u-cnic">CNIC</label>
+                            <input id="u-cnic" type="text" name="toupdate" placeholder="3520112345678"
+                                   pattern="[0-9]{13}" maxlength="13" inputmode="numeric" required>
+                            <span class="hint">13 digits, without dashes.</span>
+                        </div>
 
-    </section>
+                        <div class="field">
+                            <label for="u-roll">Roll number</label>
+                            <input id="u-roll" type="text" name="rolltoupdate" placeholder="Stf-501"
+                                   pattern="Stf-[0-9]+" required>
+                            <span class="hint">Format: Stf-xxx</span>
+                        </div>
 
+                        <hr class="divider">
 
-    <!-- STUDENT RECORDS -->
+                        <div class="group-label">
+                            New details
+                            <span>Leave a field empty to keep its current value.</span>
+                        </div>
 
-    <section class="section-card">
+                        <div class="field">
+                            <label for="u-name">Full name</label>
+                            <input id="u-name" type="text" name="name" minlength="2" maxlength="50">
+                        </div>
 
-        <div class="section-title">
-            <h2>All Students</h2>
-            <p>View all students registered in the system.</p>
-        </div>
+                        <div class="field">
+                            <label for="u-age">Age</label>
+                            <input id="u-age" type="number" name="age" min="10" max="100">
+                        </div>
 
-        <div class="table-wrapper">
+                        <div class="field">
+                            <label for="u-city">City</label>
+                            <input id="u-city" type="text" name="city">
+                        </div>
 
-            <table>
+                        <div class="field">
+                            <label for="u-department">Major / department</label>
+                            <select id="u-department" name="Department">
+                                <option value="">Keep current</option>
+                                <option value="Computer Science">Computer Science</option>
+                                <option value="Mathematics">Mathematics</option>
+                                <option value="Biological Sciences">Biological Sciences</option>
+                                <option value="English">English</option>
+                            </select>
+                        </div>
 
-                <thead>
-                    <tr>
-                        <th>Student Name</th>
-                        <th>Roll Number</th>
-                    </tr>
-                </thead>
+                        <div class="field">
+                            <label for="u-gpa">GPA</label>
+                            <input id="u-gpa" type="number" name="gpa" step="0.01" min="0" max="4">
+                        </div>
 
-                <tbody>
+                    </div>
 
-                    {% for student in students %}
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="reset" class="btn btn-ghost">Clear form</button>
+                    </div>
+                </form>
+            </div>
+        </section>
 
-                    <tr>
-                        <td>{{ student.name }}</td>
-                        <td>
-                            <span class="roll-badge">
-                                {{ student.roll_no }}
-                            </span>
-                        </td>
-                    </tr>
+        <!-- ---------- 3. ALL STUDENTS ---------- -->
+        <section class="section" id="students" aria-labelledby="students-title">
+            <div class="card">
+                <div class="card-head">
+                    <h3 id="students-title">All students</h3>
+                    <p>{{ total_students }} registered in the system.</p>
+                </div>
 
-                    {% else %}
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Student name</th>
+                                <th>Roll number</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          {% for student in students %}
+<tr>
+    <td>{{ loop.index }}. {{ student.name }}</td>
+    <td><span class="roll-badge">{{ student.roll_no }}</span></td>
+</tr>
+{% else %}
+<tr>
+    <td colspan="2" class="empty">
+        No students registered yet. Use “Add student” above to register the first one.
+    </td>
+</tr>
+{% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
 
-                    <tr>
-                        <td colspan="2" class="empty-message">
-                            No students registered yet.
-                        </td>
-                    </tr>
+        <!-- ---------- 4. DELETE STUDENT ---------- -->
+        <section class="section" id="delete" aria-labelledby="delete-title">
+            <div class="card">
+                <div class="card-head">
+                    <h3 id="delete-title">Delete student</h3>
+                    <p>Remove a student record from the system.</p>
+                </div>
 
-                    {% endfor %}
+                <div class="notice warn" role="note">
+                    Deleting a student is permanent and cannot be undone. Check both values before you continue.
+                </div>
 
-                </tbody>
+                <form action="/admin/students/delete" method="POST">
+                    <div class="form-grid">
 
-            </table>
+                        <div class="field">
+                            <label for="idtodelete">CNIC</label>
+                            <input id="idtodelete" type="text" name="idtodelete" placeholder="3520112345678"
+                                   pattern="[0-9]{13}" minlength="13" maxlength="13" inputmode="numeric" required>
+                            <span class="hint">13 digits, without dashes.</span>
+                        </div>
 
-        </div>
+                        <div class="field">
+                            <label for="rolltodelete">Roll number</label>
+                            <input id="rolltodelete" type="text" name="rolltodelete" placeholder="Stf-501"
+                                   pattern="Stf-[0-9]+" required>
+                            <span class="hint">Format: Stf-xxx</span>
+                        </div>
 
-    </section>
+                    </div>
 
+                    <label class="confirm">
+                        <input type="checkbox" name="confirm_delete" value="yes" required>
+                        I understand this student will be permanently deleted.
+                    </label>
 
-    <footer>
-        © 2026 Husanix Student Management System. All rights reserved.
-    </footer>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-danger">Delete student</button>
+                        <button type="reset" class="btn btn-ghost">Clear form</button>
+                    </div>
+                </form>
+            </div>
+        </section>
 
+        <footer>© 2026 Husanix Student Management System by Rumiware. All rights reserved.</footer>
+    </main>
 </div>
-
 </body>
 </html>

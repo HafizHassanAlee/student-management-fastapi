@@ -315,6 +315,102 @@ def create_student(
         status_code=303
     )
 
+@app.post("/admin/students/delete")
+def delete_student(
+    idtodelete: str = Form(...),
+    rolltodelete: str = Form(...),
+    confirm_delete: str = Form(...),
+    admin: dict = Depends(get_current_admin)
+):
+
+    students = load_students()
+
+    if idtodelete not in students:
+        raise HTTPException(
+            status_code=404,
+            detail="Student not found"
+        )
+
+    if students[idtodelete]["roll no"] != rolltodelete:
+        raise HTTPException(
+            status_code=400,
+            detail="CNIC and roll number do not match"
+        )
+
+    if confirm_delete != "yes":
+        raise HTTPException(
+            status_code=400,
+            detail="Please confirm deletion"
+        )
+
+    del students[idtodelete]
+
+    save_students(students)
+
+    return RedirectResponse(
+        url="/admin/dashboard",
+        status_code=303
+    )
+
+
+@app.post("/admin/students/update")
+def update_student(
+    toupdate: str = Form(...),
+    rolltoupdate: str = Form(...),
+    name: str = Form(""),
+    age: str = Form(""),
+    city: str = Form(""),
+    Department: str = Form(""),
+    gpa: str = Form("")
+):
+    students = load_students()
+
+    # Find student using CNIC
+    if toupdate not in students:
+        return HTMLResponse(
+            "Student with this CNIC was not found.",
+            status_code=404
+        )
+
+    student = students[toupdate]
+
+    # Verify roll number
+    if student.get("roll no") != rolltoupdate:
+        return HTMLResponse(
+            "Roll number does not match this student.",
+            status_code=400
+        )
+
+    # Update only fields that are not empty
+    if name.strip():
+        student["name"] = name.strip()
+
+    if age.strip():
+        try:
+            student["age"] = int(age)
+        except ValueError:
+            return HTMLResponse("Invalid age.", status_code=400)
+
+    if city.strip():
+        student["city"] = city.strip()
+
+    if Department.strip():
+        student["major"] = Department
+
+    if gpa.strip():
+        try:
+            student["gpa"] = float(gpa)
+        except ValueError:
+            return HTMLResponse("Invalid GPA.", status_code=400)
+
+    # Save updated student records
+    save_students(students)
+
+    return RedirectResponse(
+        url="/admin/dashboard",
+        status_code=303
+    )
+
 
 
 def verify_token(token: str):

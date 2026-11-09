@@ -6,35 +6,238 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Husanix | Student Dashboard</title>
 
-    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f5f8;
+            color: #1b2b40;
+            line-height: 1.5;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 980px;
+            margin: auto;
+            padding-top: 25px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #1b2b40;
+            color: white;
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .brand {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .badge {
+            background: #34445a;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+        }
+
+        .welcome {
+            margin-bottom: 25px;
+        }
+
+        .welcome h1 {
+            font-size: 26px;
+        }
+
+        .welcome p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border: 1px solid #e3e8ef;
+            border-radius: 10px;
+        }
+
+        .identity {
+            text-align: center;
+        }
+
+        .avatar {
+            width: 90px;
+            height: 90px;
+            margin: auto auto 15px;
+            background: #2563eb;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 38px;
+            font-weight: bold;
+        }
+
+        .identity h2 {
+            font-size: 20px;
+        }
+
+        .identity p {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .roll {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 5px 12px;
+            background: #e8f0ff;
+            color: #2563eb;
+            border-radius: 5px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .gpa-box {
+            margin-top: 22px;
+            padding-top: 20px;
+            border-top: 1px solid #e3e8ef;
+        }
+
+        .gpa-box span {
+            display: block;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .gpa-box strong {
+            font-size: 30px;
+        }
+
+        .gpa-box small {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .bar {
+            height: 8px;
+            background: #e9eef5;
+            border-radius: 10px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .bar i {
+            display: block;
+            height: 100%;
+            background: #2563eb;
+            border-radius: 10px;
+            width: 87.5%;
+        }
+
+        .card-head {
+            margin-bottom: 18px;
+        }
+
+        .card-head p {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px 24px;
+        }
+
+        .detail {
+            padding: 12px 0;
+            border-bottom: 1px solid #e3e8ef;
+        }
+
+        .detail span {
+            display: block;
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .detail strong {
+            font-size: 15px;
+        }
+
+        .footer {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 12px;
+            padding: 30px 0;
+        }
+
+        @media (max-width: 780px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-    <div class="container">
-      <header>
-        <div class="header">
-            <div class="brand">HUSANIX.</div>
-            <div class="badge">Student Portal</div>
-        </div>
-      </header>
+<div class="container">
 
-        <div class="welcome">
-            <h1>Welcome, {{ student.name }}!</h1>
-            <p>Here is your student profile and academic information.</p>
-        </div>
+    <header class="topbar">
+        <div class="brand">RUMIWARE.</div>
+        <div class="badge">Student portal</div>
+    </header>
 
-        <div class="profile-card">
+    <section class="welcome">
+        <h1>Welcome, {{ student.name }}!</h1>
+        <p>Here is your student profile and academic information.</p>
+    </section>
 
-            <div class="profile-top">
-                <div class="avatar">
-                    {{ student.name[0] }}
-                </div>
+    <div class="layout">
 
-                <div>
-                    <h2>{{ student.name }}</h2>
-                    <p>Student Profile</p>
-                </div>
+        <aside class="card identity">
+
+            <div class="avatar">{{ student[0] }}</div>
+
+            <h2> {{ student.name }} </h2>   
+            <p>{{ student.name }}</p>
+
+            <span class="roll">roll</span>
+
+            <div class="gpa-box">
+                <span>{{ student.gpa }}</span>
+                <strong>{{ student.gpa }}<small>/ 4.0</small></strong>
+
+        </aside>
+
+        <section class="card">
+
+            <div class="card-head">
+                <h3>Personal details</h3>
+                <p>The information registered under your name.</p>
             </div>
 
             <div class="details">
@@ -45,8 +248,8 @@
                 </div>
 
                 <div class="detail">
-                    <span>Roll Number</span>
-                    <strong>{{ student["roll no"] }}</strong>
+                    <span>Roll number</span>
+                    <strong>roll</strong>
                 </div>
 
                 <div class="detail">
@@ -61,27 +264,25 @@
 
                 <div class="detail">
                     <span>City</span>
-                    <strong>{{ student.city }}</strong>
+                    <strong> {{ student.city }} </strong>
                 </div>
 
                 <div class="detail">
                     <span>Major</span>
-                    <strong>{{ student.major }}</strong>
-                </div>
-
-                <div class="detail">
-                    <span>Academic GPA</span>
-                    <strong class="gpa">{{ student.gpa }} / 4.0</strong>
+                    <strong> {{ student.major }} </strong>
                 </div>
 
             </div>
-        </div>
 
-        <div class="footer">
-            © 2026 Husanix Student Management System
-        </div>
+        </section>
 
     </div>
+
+    <div class="footer">
+        © 2026 Husanix Student Management System by Rumiware
+    </div>
+
+</div>
 
 </body>
 </html>

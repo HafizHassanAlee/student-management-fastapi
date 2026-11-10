@@ -19,9 +19,9 @@ templates = Jinja2Templates(directory="templates")
 
 load_dotenv()
 
-SECRET_KEY = "d05b3e1db534c9cdcf5b0190faaadfbc48f474034fb4a49498982e5d5a849477"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+SECRET_KEY = os.getenv("SECRET_KEY_ENV")
+ALGORITHM = os.getenv("ALGORITHM_ENV")
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES_ENV"))
 
 
 ADMIN_USERNAME = os.getenv("ADMIN_USERNAME")

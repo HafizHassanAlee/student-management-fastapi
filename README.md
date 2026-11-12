@@ -11,6 +11,16 @@ A web-based Student Management System built with **FastAPI**, **Jinja2**, and **
 ![PyJWT](https://img.shields.io/badge/JWT-000000?style=flat-square&logo=jsonwebtokens)
 ![JSON](https://img.shields.io/badge/Storage-JSON-lightgrey?style=flat-square)
 
+## 🏗️ System Architecture
+
+```mermaid
+flowchart TD
+    A[User Browser] --> B[HTML / CSS]
+    B --> C[Jinja2 Templates]
+    C --> D[FastAPI Backend]
+    D --> E[JWT Authentication]
+    D --> F[Student Management Logic]
+    F --> G[students.json]
 ### Student Portal
 - Student login using registered name and roll number.
 - JWT-based authentication using HTTP-only cookies.

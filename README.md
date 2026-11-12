@@ -10,6 +10,15 @@ A web-based Student Management System built with **FastAPI**, **Jinja2**, and **
 - Personal dashboard displaying student information.
 - Access restricted to the authenticated student's record.
 
+# Student Management System
+
+A web-based Student Management System built with FastAPI, Jinja2, and HTML/CSS.
+
+## 🛠️ Technologies Used
+
+<p align="center">
+  <img src="https://skillicons.dev/icons?i=python,fastapi,html,css,git,github" />
+</p>
 ### Admin Portal
 - Separate administrator login.
 - Dashboard displaying registered student records and total student count.

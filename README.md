@@ -1,17 +1,39 @@
 # Student Management System
 
-A web-based Student Management System built with **FastAPI**, **Jinja2**, and **HTML/CSS**. It provides separate student and administrator portals for viewing and managing student records.
+A web-based Student Management System built with **FastAPI**, **Jinja2**, and **HTML/CSS**. It provides separate portals for students and administrators, with JSON-based student record storage.
 
 ## Features
 
-## ⚙️ Built With
+### Student Portal
+- Student login using registered name and roll number.
+- JWT-based authentication stored in an HTTP-only cookie.
+- Personal dashboard displaying the authenticated student's information.
+- Students can access only the record associated with their login token.
 
+### Admin Portal
+- Separate administrator login using credentials configured in environment variables.
+- Dashboard displaying student records and the total student count.
+- Register new student records.
+- Update existing student information.
+- Delete student records after confirmation.
+
+### Technical Features
+- FastAPI routes and backend logic.
+- Jinja2 server-side HTML templates.
+- JWT authentication using PyJWT.
+- JSON file storage.
+- Environment configuration using `python-dotenv`.
+- Static file support for CSS and other assets.
+
+## Built With
+
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
 ![Jinja2](https://img.shields.io/badge/Jinja2-B41717?style=flat-square)
 ![PyJWT](https://img.shields.io/badge/JWT-000000?style=flat-square&logo=jsonwebtokens)
 ![JSON](https://img.shields.io/badge/Storage-JSON-lightgrey?style=flat-square)
 
-## 🏗️ System Architecture
+## System Architecture
 
 ```mermaid
 flowchart TD
@@ -21,47 +43,20 @@ flowchart TD
     D --> E[JWT Authentication]
     D --> F[Student Management Logic]
     F --> G[students.json]
-### Student Portal
-- Student login using registered name and roll number.
-- JWT-based authentication using HTTP-only cookies.
-- Personal dashboard displaying student information.
-- Access restricted to the authenticated student's record.
-
-# Student Management System
-
-A web-based Student Management System built with FastAPI, Jinja2, and HTML/CSS.
-
-## 🛠️ Technologies Used
-
-<p align="center">
-  <img src="https://skillicons.dev/icons?i=python,fastapi,html,css,git,github" />
-</p>
-### Admin Portal
-- Separate administrator login.
-- Dashboard displaying registered student records and total student count.
-- Register new students.
-- Update existing student information.
-- Delete student records with a confirmation step.
-
-### Technical Features
-- FastAPI backend and routing.
-- Jinja2 server-side HTML templates.
-- JWT authentication with PyJWT.
-- JSON-based student data storage.
-- Environment configuration using `python-dotenv`.
-- Static file support.
+```
 
 ## Tech Stack
 
 | Technology | Purpose |
 |---|---|
 | Python | Backend programming |
-| FastAPI | Web framework |
-| Jinja2 | HTML templating |
+| FastAPI | Web framework and routing |
+| Jinja2 | Server-side HTML templating |
 | HTML & CSS | User interface |
-| PyJWT | Authentication tokens |
-| JSON | Student data storage |
-| python-dotenv | Environment configuration |
+| PyJWT | JWT creation and verification |
+| JSON | Student record storage |
+| python-dotenv | Environment variable loading |
+| Pydantic | Data model definitions in `models.py` |
 
 ## Project Structure
 
@@ -71,8 +66,8 @@ student-management-fastapi/
 ├── main.py
 ├── models.py
 ├── requirements.txt
-├── students.json
-├── .env
+├── students.json          # Create locally; do not commit private student data
+├── .env                   # Create locally; never commit secrets
 │
 ├── static/
 │
@@ -84,7 +79,7 @@ student-management-fastapi/
     └── admin_dashboard.html
 ```
 
-`students.json` and `.env` should be created locally if they are not already present.
+The `students.json` and `.env` files should be created locally if they are not already present. Keep real student information and secret credentials out of public repositories.
 
 ## Installation and Setup
 
@@ -95,9 +90,9 @@ git clone https://github.com/HafizHassanAlee/student-management-fastapi.git
 cd student-management-fastapi
 ```
 
-### 2. Create a virtual environment
+### 2. Create and activate a virtual environment
 
-**Windows:**
+**Windows PowerShell:**
 
 ```powershell
 python -m venv .venv
@@ -119,7 +114,7 @@ pip install -r requirements.txt
 
 ### 4. Configure environment variables
 
-Create a `.env` file in the root directory:
+Create a `.env` file in the project root:
 
 ```env
 SECRET_KEY_ENV=your_long_random_secret_key
@@ -130,89 +125,86 @@ ADMIN_USERNAME=admin
 ADMIN_PASSWORD=change_this_password
 ```
 
-Use your own strong secret key and administrator password. Never upload your `.env` file to GitHub.
+Replace the example values with your own strong secret key and administrator password. Never upload your `.env` file to GitHub.
 
-### 5. Create student data
+### 5. Create the student data file
 
-Create `students.json` in the project root.
-
-Example:
+Create `students.json` in the project root. The current application expects a JSON object whose keys are student CNICs:
 
 ```json
 {
-    "3520112345678": {
-        "name": "Ali Khan",
-        "age": 20,
-        "gender": "Male",
-        "city": "Lahore",
-        "roll no": "Stf-501",
-        "major": "Computer Science",
-        "gpa": 3.7
-    }
+  "3520112345678": {
+    "name": "Ali Khan",
+    "age": 20,
+    "gender": "Male",
+    "city": "Lahore",
+    "roll no": "Stf-501",
+    "major": "Computer Science",
+    "gpa": 3.7
+  }
 }
 ```
 
-The CNIC is used as the top-level record key.
-
-**Student login credentials:** The current implementation uses the student's name as the username and roll number as the password.
+**Current student login:** The application checks the student's name as the username and roll number as the password.
 
 ### 6. Run the application
+
+Using the FastAPI CLI:
 
 ```bash
 fastapi dev main.py
 ```
 
-Alternatively:
+Or using Uvicorn:
 
 ```bash
 uvicorn main:app --reload
 ```
 
-Open:
-
-[http://127.0.0.1:8000](http://127.0.0.1:8000)
+Open [http://127.0.0.1:8000](http://127.0.0.1:8000) in your browser.
 
 ## Application Routes
 
-| Route | Description |
-|---|---|
-| `/` | Home page and portal selection |
-| `/login` | Student login |
-| `/dashboard` | Student dashboard |
-| `/admin/login` | Admin login |
-| `/admin/dashboard` | Admin dashboard |
-| `/admin/students/create` | Register a student |
-| `/admin/students/update` | Update student information |
-| `/admin/students/delete` | Delete a student |
+| Method | Route | Description |
+|---|---|---|
+| GET | `/` | Home page and portal selection |
+| GET | `/login` | Student login page |
+| POST | `/login` | Authenticate a student |
+| GET | `/dashboard` | Student dashboard |
+| GET | `/admin/login` | Admin login page |
+| POST | `/admin/login` | Authenticate the administrator |
+| GET | `/admin/dashboard` | Admin dashboard |
+| POST | `/admin/students/create` | Register a student |
+| POST | `/admin/students/update` | Update student information |
+| POST | `/admin/students/delete` | Delete a student |
 
-## Student Information
+## Student Record Fields
 
-Each student record contains:
+Each student record currently contains:
 
-- CNIC
+- CNIC (used as the JSON record key)
 - Name
 - Age
 - Gender
 - City
-- Roll Number
-- Major / Department
+- Roll number
+- Major / department
 - GPA
 
-## Future Improvements
+## Current Limitations and Next Steps
+
+This is a learning project and currently uses a JSON file instead of a database. Planned improvements include:
 
 - PostgreSQL database integration.
 - SQLAlchemy ORM.
+- Pydantic validation integrated into request handling.
 - Individual student passwords with secure password hashing.
-- Improved authentication and authorization.
+- Stronger authentication and authorization for every admin operation.
+- Secure cookie settings for HTTPS deployment.
 - Logout functionality.
-- Stronger server-side validation.
-- Automated testing.
+- Automated tests and improved error handling.
 
-## Development Notes
-
-This is a learning project. The current implementation uses JSON-file storage rather than a relational database. Before production use, admin-only route protection, password handling, cookie security, and input validation should be strengthened.
-
-The update route also needs an `HTMLResponse` import in `main.py` for its error-handling responses.
+**Development note:** The current update handler in `main.py` returns `HTMLResponse` for some errors, but `HTMLResponse` is not imported. Add `from fastapi.responses import HTMLResponse` before using those error responses. Also, protect the update route with the admin dependency, as the create and delete routes already are.
 
 ## Author
 
